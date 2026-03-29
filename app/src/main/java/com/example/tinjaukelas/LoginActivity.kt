@@ -1,6 +1,5 @@
 package com.example.tinjaukelas
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,8 +23,8 @@ class LoginActivity : AppCompatActivity() {
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
             } else {
-                startActivity(Intent(this, RoomActivity::class.java))
-                finish()
+                // Handle login logic here
+                Toast.makeText(this, "Login Successful", Toast.LENGTH_SHORT).show()
             }
         }
     }
