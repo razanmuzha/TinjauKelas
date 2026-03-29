@@ -9,7 +9,7 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME   = "Kelas.db"
-        const val DATABASE_VERSION = 1
+        const val DATABASE_VERSION = 3
         const val TABLE_ROOM      = "rooms"
         const val COL_ID          = "id"
         const val COL_KELAS   = "Kelas"
