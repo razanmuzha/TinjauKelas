@@ -22,15 +22,17 @@ class RoomActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
 
-    // Tracks whichever card the user tapped
     private var selectedRoom: Room? = null
+    private var userId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        repository = RoomRepository(this)
+        val prefs = getSharedPreferences("session", MODE_PRIVATE)
+        userId = prefs.getInt("userId", -1)
 
+        repository = RoomRepository(this)
         btnRoomUsage = findViewById(R.id.btnRoomUsage)
         recyclerView = findViewById(R.id.recyclerView)
 
@@ -39,10 +41,9 @@ class RoomActivity : AppCompatActivity() {
         setupButtons()
     }
 
-    // ── RECYCLERVIEW SETUP ───────────────────────────────────────────
+
     private fun setupRecyclerView() {
         adapter = RoomAdapter(emptyList()) { room ->
-            // Called when a card is tapped
             selectedRoom = room
             updateButtonState(room)
         }
@@ -50,58 +51,55 @@ class RoomActivity : AppCompatActivity() {
         recyclerView.adapter = adapter
     }
 
-    // ── LOAD ROOMS FROM DB ───────────────────────────────────────────
     private fun loadRooms() {
         val rooms = repository.getAllRooms()
         adapter.updateData(rooms)
     }
 
-    // ── UPDATE BUTTON TEXT & COLOR BASED ON ROOM STATUS ─────────────
     private fun updateButtonState(room: Room) {
         btnRoomUsage.isEnabled = true
-
-        // roomUsage = false → available → show "Gunakan Ruangan"
-        // roomUsage = true  → in use   → show "Kosongkan Ruangan"
         if (room.Status) {
             btnRoomUsage.text = "Kosongkan Ruangan"
             btnRoomUsage.backgroundTintList =
                 android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.parseColor("#F44336") // red
+                    android.graphics.Color.parseColor("#F44336")
                 )
         } else {
             btnRoomUsage.text = "Gunakan Ruangan"
             btnRoomUsage.backgroundTintList =
                 android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.parseColor("#6200EE") // purple
+                    android.graphics.Color.parseColor("#6200EE")
                 )
         }
     }
 
-    // ── BUTTONS ──────────────────────────────────────────────────────
     private fun setupButtons() {
-        // Toggle room status when main button is clicked
         btnRoomUsage.setOnClickListener {
             val room = selectedRoom ?: return@setOnClickListener
-            val newStatus = !room.Status         // flip the boolean
-            repository.updateRoomStatus(room.id, newStatus)
-            fabAdd = findViewById(R.id.fabAdd)
-            fabAdd.setOnClickListener {
-                showAddRoomDialog()
+            if (!room.Status) {
+                val activeRoom = repository.getActiveRoomByUser(userId)
+                if (activeRoom != null) {
+                    Toast.makeText(
+                        this,
+                        "Kamu masih menempati ${activeRoom.Kelas}, keluar dulu!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    return@setOnClickListener
+                }
             }
-
-            // Update local reference so button reflects new status
+            val newStatus = !room.Status
+            repository.updateRoomStatus(room.id, newStatus)
             selectedRoom = room.copy(Status = newStatus)
-
             Toast.makeText(
                 this,
                 if (newStatus) "${room.Kelas} sedang digunakan"
                 else "${room.Kelas} sudah kosong",
                 Toast.LENGTH_SHORT
             ).show()
-
             loadRooms()
             updateButtonState(selectedRoom!!)
         }
+
         fabAdd = findViewById(R.id.fabAdd)
         fabAdd.setOnClickListener {
             showAddRoomDialog()
@@ -109,13 +107,12 @@ class RoomActivity : AppCompatActivity() {
     }
 
 
+
     private fun showAddRoomDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialogform, null)
         val etNama      = dialogView.findViewById<TextInputEditText>(R.id.etNama)
-        val etDeskripsi = dialogView.findViewById<TextInputEditText>(R.id.etDeskripsi) // placeholder, not saved to DB
         val btnBatal    = dialogView.findViewById<Button>(R.id.btnBatal)
         val btnSimpan   = dialogView.findViewById<Button>(R.id.btnSimpan)
-
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(false)
@@ -125,27 +122,19 @@ class RoomActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
+
         btnSimpan.setOnClickListener {
             val nama = etNama.text.toString().trim()
-
             if (nama.isEmpty()) {
                 etNama.error = "Nama tidak boleh kosong"
                 return@setOnClickListener
             }
-
-            // New room always starts as available (false)
-            val newRoom = Room(
-                Kelas  = nama,
-                Status = false,
-                userId    = 1       // replace with actual logged-in user ID later
-            )
+            val newRoom = Room(Kelas = nama, Status = false, userId = userId)
             repository.insertRoom(newRoom)
-
             Toast.makeText(this, "$nama berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
             loadRooms()
         }
-
         dialog.show()
     }
 }

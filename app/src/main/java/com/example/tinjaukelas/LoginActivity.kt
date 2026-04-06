@@ -16,6 +16,7 @@ class LoginActivity : AppCompatActivity() {
         val etEmail = findViewById<TextInputEditText>(R.id.etEmail)
         val etPassword = findViewById<TextInputEditText>(R.id.etPassword)
         val btnLogin = findViewById<MaterialButton>(R.id.btnLogin)
+        val userRepository = UserRepository(this)
 
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
@@ -23,9 +24,20 @@ class LoginActivity : AppCompatActivity() {
 
             if (email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Please fill all fields", Toast.LENGTH_SHORT).show()
-            } else {
+                return@setOnClickListener
+            }
+            val user = userRepository.login(email, password)
+            if (user != null) {
+                // Simpan userId ke session
+                getSharedPreferences("session", MODE_PRIVATE)
+                    .edit()
+                    .putInt("userId", user.id)
+                    .apply()
+
                 startActivity(Intent(this, RoomActivity::class.java))
                 finish()
+            } else {
+                Toast.makeText(this, "Email atau password salah!", Toast.LENGTH_SHORT).show()
             }
         }
     }
