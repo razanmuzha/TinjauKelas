@@ -5,12 +5,41 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/background"
     tools:context=".LoginActivity">
 
-    <!-- Logo/App Name -->
+    <!-- ── LOGO + APP NAME (atas card) ── -->
+    <LinearLayout
+        android:id="@+id/layoutHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@id/cardViewLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <!-- CardView Container -->
+        <!-- Lingkaran icon -->
+        <FrameLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/bg_title_badge"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_school"
+                android:tint="#6200EE"
+                android:contentDescription="Logo" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <!-- ── CARD LOGIN ── -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewLogin"
         android:layout_width="0dp"
@@ -18,7 +47,7 @@
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         app:cardCornerRadius="24dp"
-        app:cardElevation="12dp"
+        app:cardElevation="16dp"
         app:cardBackgroundColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,30 +58,45 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="28dp">
 
-            <!-- Header -->
+            <!-- Judul dalam card dengan badge rectangle -->
+            <TextView
+                android:layout_width="263dp"
+                android:layout_height="71dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:background="@drawable/bg_badge_navy"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="8dp"
+                android:text="TINJAU KELAS"
+                android:textColor="@color/white"
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Login to continue"
-                android:textSize="16sp"
-                android:textColor="#757575"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="32dp" />
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="28dp"
+                android:text="Masuk untuk melanjutkan"
+                android:textColor="#9E9E9E"
+                android:textSize="14sp" />
 
-            <!-- Email Input -->
+            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
                 android:hint="Email"
+                app:boxStrokeColor="#30364F"
+                app:hintTextColor="#30364F"
                 app:startIconDrawable="@drawable/ic_email"
-                app:startIconTint="#6200EE"
-                app:boxStrokeColor="#6200EE"
-                app:hintTextColor="#6200EE"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginBottom="16dp">
+                app:startIconTint="#30364F">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
@@ -62,19 +106,19 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Password Input -->
+            <!-- Password -->
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
                 android:hint="Password"
-                app:startIconDrawable="@drawable/ic_lock"
-                app:startIconTint="#6200EE"
+                app:boxStrokeColor="#30364F"
                 app:endIconMode="password_toggle"
-                app:endIconTint="#6200EE"
-                app:boxStrokeColor="#6200EE"
-                app:hintTextColor="#6200EE"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_marginBottom="8dp">
+                app:endIconTint="#30364F"
+                app:hintTextColor="#30364F"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="#0D47A1">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etPassword"
@@ -84,39 +128,20 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Forgot Password -->
-            <TextView
-                android:id="@+id/tvForgotPassword"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Forgot Password?"
-                android:textColor="#6200EE"
-                android:textSize="14sp"
-                android:layout_gravity="end"
-                android:layout_marginBottom="24dp"
-                android:clickable="true"
-                android:focusable="true" />
-
-            <!-- Login Button -->
+            <!-- Tombol Login -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:text="LOGIN"
-                android:textSize="16sp"
+                android:layout_height="52dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="20dp"
+                android:letterSpacing="0.1"
+                android:text="MASUK"
+                android:textColor="@android:color/white"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:cornerRadius="12dp"
-                android:backgroundTint="#6200EE"
-                android:layout_marginBottom="16dp" />
-
-            <!-- Divider -->
-
-            <!-- Register Link -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center_horizontal"/>
+                app:backgroundTint="#30364F" />
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
