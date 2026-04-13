@@ -24,10 +24,10 @@
             android:id="@+id/imgStatus"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:background="@drawable/bg_circle"
+            android:background="@drawable/ic_launcher_background"
             android:contentDescription="Status"
             android:padding="10dp"
-            android:src="@drawable/ic_class" />
+            android:src="@drawable/ic_launcher_foreground" />
 
         <!-- INFO KELAS -->
         <LinearLayout
