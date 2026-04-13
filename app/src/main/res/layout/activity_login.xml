@@ -24,7 +24,6 @@
         <FrameLayout
             android:layout_width="72dp"
             android:layout_height="72dp"
-            android:background="@drawable/bg_title_badge"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="12dp">
 
@@ -32,8 +31,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_school"
-                android:tint="#6200EE"
+                android:src="#"
                 android:contentDescription="Logo" />
         </FrameLayout>
 
@@ -95,7 +93,6 @@
                 android:hint="Email"
                 app:boxStrokeColor="#30364F"
                 app:hintTextColor="#30364F"
-                app:startIconDrawable="@drawable/ic_email"
                 app:startIconTint="#30364F">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -117,7 +114,6 @@
                 app:endIconMode="password_toggle"
                 app:endIconTint="#30364F"
                 app:hintTextColor="#30364F"
-                app:startIconDrawable="@drawable/ic_lock"
                 app:startIconTint="#0D47A1">
 
                 <com.google.android.material.textfield.TextInputEditText
