@@ -1,72 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#F5F5F5"
     tools:context=".MainActivity">
 
-    <ScrollView
+    <!-- ── BACKGROUND IMAGE (full screen) ── -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/background"
+        android:scaleType="centerCrop"
+        android:contentDescription="Background" />
+
+    <!-- ── BADGE NAMA USER (pojok kanan atas, fixed) ── -->
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_user_badge"
+        android:drawablePadding="6dp"
+        android:paddingStart="12dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="12dp"
+        android:paddingBottom="8dp"
+        android:text="Nama user"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:textStyle="bold" />
+
+    <!-- ── SCROLL: spacer transparan 30% + panel konten ── -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/imageView"
+            <!-- Spacer transparan ~30% layar -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:scaleType="centerCrop"
-                android:background="@color/white"
-                android:contentDescription="Banner Image"
-                android:layout_marginBottom="16dp" />
+                android:layout_height="240dp" />
 
-
-            <Button
-                android:id="@+id/btnRoomUsage"
+            <!-- ── PANEL KONTEN (70% ke bawah, rounded atas) ── -->
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Pilih Kelas untuk Digunakan"
-                android:textSize="16sp"
-                android:backgroundTint="#6200EE"
-                android:textColor="@color/white"
-                android:enabled="false"
-                android:layout_marginBottom="16dp" />
+                android:background="@drawable/bg_badge_lightcream"
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <!-- IMAGE BANNER -->
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="16dp"
+                    android:background="@color/white"
+                    android:contentDescription="Banner Image"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_launcher_foreground" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Daftar Kelas"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="#212121"
-                android:layout_marginBottom="8dp" />
+                <!-- BUTTON GUNAKAN RUANGAN -->
+                <Button
+                    android:id="@+id/btnRoomUsage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#30364F"
+                    android:enabled="false"
+                    android:text="Pilih Kelas untuk Digunakan"
+                    android:textColor="@color/white"
+                    android:textSize="16sp" />
 
+                <!-- LABEL DAFTAR KELAS -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="Daftar Kelas"
+                    android:textColor="#212121"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:nestedScrollingEnabled="false"
-                tools:listitem="@layout/item_card" />
+                <!-- RECYCLERVIEW -->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_card" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fabAdd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|end"
-                android:layout_margin="16dp"
-                android:src="@android:drawable/ic_input_add"
-                android:backgroundTint="#6200EE"
-                android:tint="@color/white" />
-
+            </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>
