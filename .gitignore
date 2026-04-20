@@ -13,5 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+<<<<<<< HEAD
 /.idea/codeStyles
 /.idea
+=======
+.idea/misc.xml
+>>>>>>> backendtesting

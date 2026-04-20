@@ -6,9 +6,8 @@ import android.database.Cursor
 
 class RoomRepository(context: Context) {
 
-    private val dbHelper = DatabaseHelper(context)
+    private val db = DatabaseHelper.getInstance(context).writableDatabase
 
-    // Helper: converts a cursor row into a Room object
     private fun cursorToRoom(cursor: Cursor) = Room(
         id        = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ID)),
         Kelas  = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_KELAS)),
@@ -18,109 +17,57 @@ class RoomRepository(context: Context) {
 
 
     fun insertRoom(room: Room): Long {
-        val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put(DatabaseHelper.COL_KELAS,room.Kelas)
             put(DatabaseHelper.COL_STATUS, if (room.Status) 1 else 0)
             put(DatabaseHelper.COL_USER_ID,room.userId)
         }
-        val id = db.insert(DatabaseHelper.TABLE_ROOM, null, values)
-        db.close()
-        return id
+        return db.insert(DatabaseHelper.TABLE_ROOM, null, values)
     }
 
 
     fun getAllRooms(): List<Room> {
         val rooms = mutableListOf<Room>()
-        val db = dbHelper.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM ${DatabaseHelper.TABLE_ROOM}", null)
-
         if (cursor.moveToFirst()) {
             do { rooms.add(cursorToRoom(cursor)) } while (cursor.moveToNext())
         }
 
         cursor.close()
-        db.close()
         return rooms
     }
 
 
-    fun getRoomsByStatus(status: String): List<Room> {
-        val rooms = mutableListOf<Room>()
-        val db = dbHelper.readableDatabase
+
+    fun getActiveRoomByUser(userId: Int): Room? {
         val cursor = db.rawQuery(
-            "SELECT * FROM ${DatabaseHelper.TABLE_ROOM} WHERE ${DatabaseHelper.COL_KELAS} = ?",
-            arrayOf(status)
-        )
-
-        if (cursor.moveToFirst()) {
-            do { rooms.add(cursorToRoom(cursor)) } while (cursor.moveToNext())
-        }
-
-        cursor.close()
-        db.close()
-        return rooms
-    }
-
-
-    fun getRoomsByUser(userId: Int): List<Room> {
-        val rooms = mutableListOf<Room>()
-        val db = dbHelper.readableDatabase
-        val cursor = db.rawQuery(
-            "SELECT * FROM ${DatabaseHelper.TABLE_ROOM} WHERE ${DatabaseHelper.COL_USER_ID} = ?",
+            "SELECT * FROM ${DatabaseHelper.TABLE_ROOM} WHERE ${DatabaseHelper.COL_USER_ID} = ? AND ${DatabaseHelper.COL_STATUS} = 1",
             arrayOf(userId.toString())
         )
-
-        if (cursor.moveToFirst()) {
-            do { rooms.add(cursorToRoom(cursor)) } while (cursor.moveToNext())
-        }
-
+        val room = if (cursor.moveToFirst()) cursorToRoom(cursor) else null
         cursor.close()
-        db.close()
-        return rooms
+        return room
     }
 
-    fun updateRoom(room: Room): Int {
-        val db = dbHelper.writableDatabase
-        val values = ContentValues().apply {
-            put(DatabaseHelper.COL_KELAS,  room.Kelas)
-            put(DatabaseHelper.COL_STATUS, if (room.Status) 1 else 0)
-            put(DatabaseHelper.COL_USER_ID,    room.userId)
-        }
-        val rowsAffected = db.update(
-            DatabaseHelper.TABLE_ROOM,
-            values,
-            "${DatabaseHelper.COL_ID} = ?",
-            arrayOf(room.id.toString())
-        )
-        db.close()
-        return rowsAffected
-    }
 
     fun updateRoomStatus(roomId: Int, newStatus: Boolean): Int {
-        val db = dbHelper.writableDatabase
         val values = ContentValues().apply {
             put(DatabaseHelper.COL_STATUS, if (newStatus) 1 else 0)
         }
-        val rowsAffected = db.update(
+        return db.update(
             DatabaseHelper.TABLE_ROOM,
             values,
             "${DatabaseHelper.COL_ID} = ?",
             arrayOf(roomId.toString())
         )
-        db.close()
-        return rowsAffected
+
     }
 
-
-    fun deleteRoom(roomId: Int): Int {
-        val db = dbHelper.writableDatabase
-        val rowsDeleted = db.delete(
-            DatabaseHelper.TABLE_ROOM,
-            "${DatabaseHelper.COL_ID} = ?",
-            arrayOf(roomId.toString())
-        )
-        db.close()
-        return rowsDeleted
+        fun deleteRoom(roomId: Int): Int {
+            return db.delete(
+                DatabaseHelper.TABLE_ROOM,
+                "${DatabaseHelper.COL_ID} = ?",
+                arrayOf(roomId.toString())
+            )
+        }
     }
-}
