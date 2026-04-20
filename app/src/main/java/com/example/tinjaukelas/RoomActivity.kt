@@ -38,12 +38,10 @@ class RoomActivity : AppCompatActivity() {
 
         repository = RoomRepository(this)
         btnRoomUsage = findViewById(R.id.btnRoomUsage)
-        btnAbsen = findViewById(R.id.btnAbsen)
         recyclerView = findViewById(R.id.recyclerView)
         fabAdd  = findViewById(R.id.fabAdd)
 
         fabAdd.visibility = if (userRole == "admin") View.VISIBLE else View.GONE
-        btnAbsen.visibility = if (userRole == "guru") View.VISIBLE else View.GONE
 
         setupRecyclerView()
         loadRooms()
