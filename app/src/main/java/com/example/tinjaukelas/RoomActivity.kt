@@ -13,17 +13,20 @@ import com.example.tinjaukelas.Room
 import com.example.tinjaukelas.RoomRepository
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputEditText
-
+import android.view.View
+import android.content.Intent
 class RoomActivity : AppCompatActivity() {
 
     private lateinit var repository: RoomRepository
     private lateinit var adapter: RoomAdapter
     private lateinit var btnRoomUsage: Button
+    private lateinit var btnAbsen: Button
     private lateinit var recyclerView: RecyclerView
     private lateinit var fabAdd: FloatingActionButton
 
     private var selectedRoom: Room? = null
     private var userId: Int = -1
+    private var userRole: String = "siswa"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,17 +34,21 @@ class RoomActivity : AppCompatActivity() {
 
         val prefs = getSharedPreferences("session", MODE_PRIVATE)
         userId = prefs.getInt("userId", -1)
+        userRole = prefs.getString("userRole", "siswa") ?: "siswa"
 
         repository = RoomRepository(this)
         btnRoomUsage = findViewById(R.id.btnRoomUsage)
+        btnAbsen = findViewById(R.id.btnAbsen)
         recyclerView = findViewById(R.id.recyclerView)
+        fabAdd  = findViewById(R.id.fabAdd)
+
+        fabAdd.visibility = if (userRole == "admin") View.VISIBLE else View.GONE
+        btnAbsen.visibility = if (userRole == "guru") View.VISIBLE else View.GONE
 
         setupRecyclerView()
         loadRooms()
         setupButtons()
     }
-
-
     private fun setupRecyclerView() {
         adapter = RoomAdapter(emptyList()) { room ->
             selectedRoom = room
@@ -100,9 +107,16 @@ class RoomActivity : AppCompatActivity() {
             updateButtonState(selectedRoom!!)
         }
 
-        fabAdd = findViewById(R.id.fabAdd)
         fabAdd.setOnClickListener {
             showAddRoomDialog()
+        }
+
+        btnAbsen.setOnClickListener {
+            //TODO: implementasi absensi untuk guru
+            //val intent = Intent(this, AbsenActivity::class.java)
+            //intent.putExtra("guruId", userId)
+            //startActivity(intent)
+                Toast.makeText(this, "Fitur absensi belum tersedia", Toast.LENGTH_SHORT).show()
         }
     }
 

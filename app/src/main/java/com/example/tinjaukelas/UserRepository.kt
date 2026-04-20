@@ -15,8 +15,8 @@ class UserRepository(context: Context) {
             User(
                 id       = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ID)),
                 email    = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_EMAIL)),
-                password = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_PASSWORD))
-            )
+                password = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_PASSWORD)),
+                role     = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ROLE)))
         } else null
         cursor.close()
         return user

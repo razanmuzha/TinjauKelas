@@ -32,6 +32,7 @@ class LoginActivity : AppCompatActivity() {
                 getSharedPreferences("session", MODE_PRIVATE)
                     .edit()
                     .putInt("userId", user.id)
+                    .putString("userRole", user.role)
                     .apply()
 
                 startActivity(Intent(this, RoomActivity::class.java))

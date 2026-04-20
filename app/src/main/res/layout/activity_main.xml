@@ -39,6 +39,13 @@
                 android:enabled="false"
                 android:layout_marginBottom="16dp" />
 
+            <Button
+                android:id="@+id/btnAbsen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Absen"
+                android:visibility="gone" />
+
 
             <TextView
                 android:layout_width="wrap_content"
