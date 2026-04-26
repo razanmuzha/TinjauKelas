@@ -17,8 +17,7 @@
             android:id="@+id/imgLogo"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_school"
-            android:tint="@color/white"
+            android:src="@drawable/ic_school_white"
             android:contentDescription="Logo" />
 
         <!-- Nama App -->
