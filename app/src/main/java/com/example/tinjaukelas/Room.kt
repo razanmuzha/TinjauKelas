@@ -5,5 +5,6 @@ data class Room(
     val id: Int = 0,
     val Kelas: String,
     val Status: Boolean,
-    val userId: Int
+    val userId: Int,
+    val Kapasitas: Int
 )

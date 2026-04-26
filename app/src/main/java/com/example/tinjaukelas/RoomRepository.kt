@@ -12,7 +12,8 @@ class RoomRepository(context: Context) {
         id        = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ID)),
         Kelas  = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_KELAS)),
         Status = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_STATUS)) == 1,
-        userId    = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ID))
+        userId    = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_USER_ID)),
+        Kapasitas = cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseHelper.COL_KAPASITAS))
     )
 
 
@@ -21,6 +22,7 @@ class RoomRepository(context: Context) {
             put(DatabaseHelper.COL_KELAS,room.Kelas)
             put(DatabaseHelper.COL_STATUS, if (room.Status) 1 else 0)
             put(DatabaseHelper.COL_USER_ID,room.userId)
+            put(DatabaseHelper.COL_KAPASITAS,room.Kapasitas)
         }
         return db.insert(DatabaseHelper.TABLE_ROOM, null, values)
     }
@@ -50,9 +52,10 @@ class RoomRepository(context: Context) {
     }
 
 
-    fun updateRoomStatus(roomId: Int, newStatus: Boolean): Int {
+    fun updateRoomStatusAndUser(roomId: Int, newStatus: Boolean, userId: Int): Int {
         val values = ContentValues().apply {
             put(DatabaseHelper.COL_STATUS, if (newStatus) 1 else 0)
+            put(DatabaseHelper.COL_USER_ID, if (newStatus) userId else 0) // 0 = tidak ada yang pakai
         }
         return db.update(
             DatabaseHelper.TABLE_ROOM,
@@ -60,7 +63,6 @@ class RoomRepository(context: Context) {
             "${DatabaseHelper.COL_ID} = ?",
             arrayOf(roomId.toString())
         )
-
     }
 
         fun deleteRoom(roomId: Int): Int {

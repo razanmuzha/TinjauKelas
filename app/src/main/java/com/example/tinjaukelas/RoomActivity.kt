@@ -38,8 +38,10 @@ class RoomActivity : AppCompatActivity() {
 
         repository = RoomRepository(this)
         btnRoomUsage = findViewById(R.id.btnRoomUsage)
+        btnAbsen = findViewById(R.id.btnAbsen)
         recyclerView = findViewById(R.id.recyclerView)
-        fabAdd  = findViewById(R.id.fabAdd)
+        fabAdd = findViewById(R.id.fabAdd)
+        findViewById<Button>(R.id.btnLogout).setOnClickListener { logout() }
 
         fabAdd.visibility = if (userRole == "admin") View.VISIBLE else View.GONE
 
@@ -47,6 +49,7 @@ class RoomActivity : AppCompatActivity() {
         loadRooms()
         setupButtons()
     }
+
     private fun setupRecyclerView() {
         adapter = RoomAdapter(emptyList()) { room ->
             selectedRoom = room
@@ -93,7 +96,7 @@ class RoomActivity : AppCompatActivity() {
                 }
             }
             val newStatus = !room.Status
-            repository.updateRoomStatus(room.id, newStatus)
+            repository.updateRoomStatusAndUser(room.id, newStatus, userId)
             selectedRoom = room.copy(Status = newStatus)
             Toast.makeText(
                 this,
@@ -114,17 +117,16 @@ class RoomActivity : AppCompatActivity() {
             //val intent = Intent(this, AbsenActivity::class.java)
             //intent.putExtra("guruId", userId)
             //startActivity(intent)
-                Toast.makeText(this, "Fitur absensi belum tersedia", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Fitur absensi belum tersedia", Toast.LENGTH_SHORT).show()
         }
     }
 
 
-
     private fun showAddRoomDialog() {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialogform, null)
-        val etNama      = dialogView.findViewById<TextInputEditText>(R.id.etNama)
-        val btnBatal    = dialogView.findViewById<Button>(R.id.btnBatal)
-        val btnSimpan   = dialogView.findViewById<Button>(R.id.btnSimpan)
+        val etNama = dialogView.findViewById<TextInputEditText>(R.id.etNama)
+        val btnBatal = dialogView.findViewById<Button>(R.id.btnBatal)
+        val btnSimpan = dialogView.findViewById<Button>(R.id.btnSimpan)
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
             .setCancelable(false)
@@ -134,19 +136,29 @@ class RoomActivity : AppCompatActivity() {
             dialog.dismiss()
         }
 
-
         btnSimpan.setOnClickListener {
             val nama = etNama.text.toString().trim()
             if (nama.isEmpty()) {
                 etNama.error = "Nama tidak boleh kosong"
                 return@setOnClickListener
             }
-            val newRoom = Room(Kelas = nama, Status = false, userId = userId)
+            val newRoom = Room(Kelas = nama, Status = false, userId = userId, Kapasitas = 0)
             repository.insertRoom(newRoom)
             Toast.makeText(this, "$nama berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
             loadRooms()
         }
         dialog.show()
+    }
+
+    private fun logout() {
+        getSharedPreferences("session", MODE_PRIVATE)
+            .edit()
+            .clear()
+            .apply()
+        val intent = Intent(this, LoginActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+        finish()
     }
 }

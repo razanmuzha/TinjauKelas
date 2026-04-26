@@ -39,7 +39,7 @@ class RoomAdapter(
         holder.tvNamaKelas.text = room.Kelas
 
         // Capacity — placeholder since no capacity column yet
-        holder.tvKapasitas.text = "Kapasitas: -"
+        holder.tvKapasitas.text = "Kapasitas: ${room.Kapasitas}"
 
         // roomUsage = false → available (Tersedia)
         // roomUsage = true  → in use (Digunakan)

@@ -9,11 +9,12 @@ class DatabaseHelper(context: Context) :
 
     companion object {
         const val DATABASE_NAME = "Kelas.db"
-        const val DATABASE_VERSION = 5
+        const val DATABASE_VERSION = 6
 
         // rooms
         const val TABLE_ROOM = "rooms"
         const val COL_STATUS = "Status"
+        const val COL_KAPASITAS = "Kapasitas"
 
         // users
         const val TABLE_USER = "users"
@@ -54,7 +55,8 @@ class DatabaseHelper(context: Context) :
                 $COL_ID      INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COL_KELAS   TEXT NOT NULL,
                 $COL_STATUS  INTEGER NOT NULL DEFAULT 0,
-                $COL_USER_ID INTEGER NOT NULL
+                $COL_USER_ID INTEGER NOT NULL,
+                $COL_KAPASITAS INTEGER NOT NULL DEFAULT 0
             )
         """.trimIndent())
 

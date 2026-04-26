@@ -78,13 +78,25 @@
                     android:textColor="@color/white"
                     android:textSize="16sp" />
 
-                <!-- Button FabAdd -->
+                <!-- BUTTON ABSEN -->
                 <Button
+                    android:id="@+id/btnAbsen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:backgroundTint="#30364F"
+                    android:text="Absen"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:visibility="gone" />
+
+                <!-- Button FabAdd -->
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fabAdd"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="10dp"
-                    />
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_school"
+                    android:contentDescription="Tambah Ruangan" />
 
                 <!-- LABEL DAFTAR KELAS -->
                 <TextView
@@ -103,6 +115,16 @@
                     android:layout_height="wrap_content"
                     android:nestedScrollingEnabled="false"
                     tools:listitem="@layout/item_card" />
+
+                <Button
+                    android:id="@+id/btnLogout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top|start"
+                    android:layout_marginTop="48dp"
+                    android:layout_marginStart="16dp"
+                    android:text="Logout"
+                    android:textSize="12sp" />
 
             </LinearLayout>
         </LinearLayout>
